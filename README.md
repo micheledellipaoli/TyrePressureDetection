@@ -111,13 +111,19 @@ To install Docker Compose, execute the following commands:
 <br>
 
 * **Node.js**: it is a JavaScript runtime useful to execute back-end code.
+<br>
+To install Node.js, execute the following commands:
+    ````shell
+   sudo apt install nodejs
+    ````
+    
+<br>
 
 
 * **Nuclio**: it enables you to **run a function** when an event is triggered. <br> 
 It will be executed on a Docker Container.
 
-* **RabbitMQ**: it is a **message broker** useful to post messages on topics, by using either MQTT and AMQP protocol.
-<br> 
+* **RabbitMQ**: it is a **message broker** useful to post messages on topics, by using either MQTT and AMQP protocol.<br> 
 It will be executed on a Docker Container.
 
 * **MySQL**: it provides a **Relational Database instance** in which we will **store** our recorded ***pressure values*** with their corresponding ***timestamp***, in order to gather and process them.<br>
