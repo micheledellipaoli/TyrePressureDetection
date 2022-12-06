@@ -110,8 +110,7 @@ To install Docker Compose, execute the following commands:
     ````
 <br>
 
-* **Node.js**: it is a JavaScript runtime useful to execute back-end code.
-<br>
+* **Node.js**: it is a JavaScript runtime useful to execute back-end code.<br>
 To install Node.js, execute the following commands:
     ````shell
    sudo apt install nodejs
