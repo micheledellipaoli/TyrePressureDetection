@@ -13,7 +13,7 @@
 
 
 ##### 1) Application Goal
-The system allows to **monitor** the pressure of a car's tyre, in order to **alert** the driver:
+The system allows to **monitor** the pressure of a car's tyre in order to **alert** the driver:
 * in case a **tyre puncture** occurs;
 * just to report **low tyre pressure**.
 
@@ -111,7 +111,7 @@ To install Docker Compose, execute the following commands:
 <br>
 
 * **Node.js**: it is a JavaScript runtime useful to execute back-end code.<br>
-To install Node.js, execute the following commands:
+To install Node.js, execute the following command:
     ````shell
    sudo apt install nodejs
     ````
