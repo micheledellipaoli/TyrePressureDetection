@@ -90,6 +90,7 @@ To install Docker, execute the following commands:
     sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu \$(lsb_release -cs) \ stable"
     sudo apt-get update
     sudo apt-get install docker-ce
+    sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
     ````
 
 <br>
@@ -104,16 +105,20 @@ To install Docker Compose, execute the following commands:
     ````
 <br>
 
+* **Node.js**: it is a JavaScript runtime useful to execute back-end code.
+
+
 * **Nuclio**: it enables you to **run a function** when an event is triggered. <br> 
 It will be executed on a Docker Container.
 
-* **RabbitMQ**: it is a **Message broker** useful to post messages on topics, by ysing either MQTT and AMQP protocol.
+* **RabbitMQ**: it is a **message broker** useful to post messages on topics, by using either MQTT and AMQP protocol.
 <br> 
 It will be executed on a Docker Container.
 
 * **MySQL**: it provides a Relational Database instance in which we will store our recorded pressure values in order to gather and process them. 
+It will be executed on a Docker Container.
 
-* **Node.js**: it is a JavaScript runtime useful to execute back-end code.
+* **MySQL Workbench**: it is a visual tool which provides an IDE to work with MySQL.
 
 <br>
 <br>
@@ -121,18 +126,65 @@ It will be executed on a Docker Container.
 ##### 5) Build in Docker
 To run the system, you must execute the folliwng steps. 
 <br>
-1. Run MySQL on Docker by executing the following command:
+
+1. Run MySQL on a Docker Container named "mysqldb" by executing the following command:
     ```shell
-    docker run -p 8070:8070 -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp nuclio/dashboard:stable-amd64
+    docker run --name mysqldb -p 33060:3306 -e MYSQL_ROOT_PASSWORD=1234 -d mysql:latest
     ```
+
+2. Open the MySQL shell by executing the following command:
+    ```shell
+    docker exec -it mysqldb mysql -u root -p
+    ```
+
+3. You will be asked to enter the password associated with the MySQL root account, so type it and press enter.
+
+
+4. Create a Database called "sciot_project" by executing the following command:
+    ````shell
+    mysql> CREATE DATABASE sciot_project;
+    ````
+
+5. Create a Table called "tyre_pressure_detection" inside the "sciot_project" Database, by executing the following commands:    
+    ````shell
+    mysql> USE sciot_project;
+    mysql> CREATE TABLE tyre_pressure(id int(11) NOT NULL AUTO_INCREMENT, pressure varchar(45) NOT NULL, timestamp varchar(100) NOT NULL,  PRIMARY KEY (id));
+    
+    ````
+    
+6. Grant permission to others Containers to connect to the Database by executing the following commands:
+    ````shell
+    mysql> ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY '1234';
+    mysql> flush privileges;
+    ````
+
+7. Exit the MySQL shell by executing the following command:
+    ````shell
+    mysql> exit
+    ````
+    
+    
+<br>
 
 1. Run Nuclio on Docker by executing the following command:
     ```shell
-    docker run -p 8070:8070 -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp nuclio/dashboard:stable-amd64
+    docker run --name nuclio-dashboard -p 8070:8070 -d -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp nuclio/dashboard:stable-amd64
     ```
+    
+<br>
+
+8. Create a Docker network and add the Nuclio Container and the MySQL Container in order to enable the communication.
+    ````shell
+    docker network create project-network
+    docker network connect project-network mysqldb
+    docker network connect project-network nuclio-dashboard
+    ````
+    
+<br>
+
 2. Run RabbitMQ on Docker by executing the following command:
     ```shell
-    docker run -p 9000:15672 -p 1883:1883 -p 5672:5672 cyrilix/rabbitmq-mqtt
+    docker run -p 9000:15672 -d -p 1883:1883 -p 5672:5672 cyrilix/rabbitmq-mqtt
     ```
 3. Open your Browser and type into the Address bar the following URL to visualize the Nuclio Dashboard:
     ```shell
