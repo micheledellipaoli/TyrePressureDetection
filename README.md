@@ -23,7 +23,7 @@ The system allows to **monitor** the pressure of a car's tyre in order to **aler
 The system elaborates data recorded by a simulated sensor and **sends** to the **console** a specific **message**, which will be:
 1. "**Low tyre pressure registered!**": if the recorded pressure is lower than the standard one;
 2. "**Tyre pressure restored!**": if the sensor records a pressure greater or equals than the standard one, while the previously recorded pressure was lower than the standard one.
-3. "**Optimal tyre pressure!**": if the sensor records a pressure greater or equals than the standard one, and the previously recorded pressure was greater or equals than the standard one too.
+3. "**Optimal tyre pressure!**": if the sensor records a pressure greater or equals than the standard one, and the previously recorded pressure was already greater or equals than the standard one.
 4. "**Warning, possible tyre puncture!**": if the sensor records a continuous drop in pressure during a small period of time. <br>
 More specifically, to simulate a tyre puncture, we will suppose to record **5 tyre pressure decreasing values** in a period of time of **1 minute**.
 
@@ -33,7 +33,7 @@ More specifically, to simulate a tyre puncture, we will suppose to record **5 ty
 The system is composed by:
 * several **functions** in Node.js;
 * two **loggers**;
-* a **MySQL Databse**.
+* a **MySQL Database**.
 
 <br>
 
@@ -43,15 +43,15 @@ The system is composed by:
 
 
 * **Simulate Tyre Puncture**: it simulates a **puncture** by sending **5 decreasing pressure messages** to the topic "iot/tyre/pressure".<br>
-Note: each of these 5 pressure value is lower than the one recorded before and always lower than the standard value one.
+Note: each of the last 4 pressure values is lower than the recorded previous one, and always lower than the standard value one.
 
 * **Restore Tyre Pressure**: it simulates the act of **inflating** the tyre by sending a message to the topic "iot/tyre/pressure" with a pressure value **greater or equals** than the standard one.
 
 
-* **Consume Tyre Pressure**: it is triggered by an incoming message on the topic  "iot/tyre/pressure", and **insert** into a Relational Database a record composed by the **pressure value** and the associated **timestamp**.
+* **Consume Tyre Pressure**: it is triggered by an incoming message on the topic  "iot/tyre/pressure" and **insert** into a Relational Database a record composed by the **pressure value** and its relative **timestamp**.
 
 
-* **Interpreter**: a function which **retrieves** the **last 5 records** from the Database and **interprets** the **data**.<br>
+* **Interpreter**: it retrieves the **last 5 records** from the Database and **interprets** the **data**.<br>
 More specifically:
     * if timestamps **fit** into a period of time of **1 minute** and the pressure values are **sorted** in **decreasing order** by the timestamps, then the function will send a message to the topic "**iot/console**" reporting: "**Warning, possible tyre puncture!**"; 
     
@@ -61,7 +61,7 @@ More specifically:
     
     * if the **second-last pressure value** is **lower** than the standard one, while the **last pressure value** is **greater** or **equals** to the standard one, the function will send a message to topic "**iot/console**" reporting: "**Tyre pressure restored!**".
     
-    * if the **second-last pressure value** is **greater** or **equals** to the standard one, and the **last pressure value** **greater** or **equals** to the standard one too, the function will send a message to topic "**iot/console**" reporting: "**Tyre pressure optimal!**".
+    * if the **second-last pressure value** is **greater** or **equals** to the standard one, and the **last pressure value** is **greater** or **equals** to the standard one as well, the function will send a message to topic "**iot/console**" reporting: "**Tyre pressure optimal!**".
 
 <br>
 
@@ -125,7 +125,7 @@ It will be executed on a Docker Container.
 * **RabbitMQ**: it is a **message broker** useful to post messages on topics, by using either MQTT and AMQP protocol.<br> 
 It will be executed on a Docker Container.
 
-* **MySQL**: it provides a **Relational Database instance** in which we will **store** our recorded ***pressure values*** with their corresponding ***timestamp***, in order to gather and process them.<br>
+* **MySQL**: it provides a **Relational Database instance** in which we will **store** our recorded ***pressure values*** with their relative ***timestamp***, in order to gather and process them.<br>
 It will be executed on a Docker Container.
 
 <br>
@@ -145,7 +145,7 @@ To build the system on Docker Containers, you must execute the folliwng steps.
     docker exec -it mysqldb mysql -u root -p
     ```
 
-3. You will be asked to enter the **password** associated with the MySQL root account which you've typed in the previously "docker run" command, so type it and press enter.
+3. You will be asked to enter the **password** associated with the MySQL Root Account which you've typed in the previous "docker run" command, so type ***1234*** and press enter.
 
 
 4. Create a Database called "**sciot_project**" by executing the following command:
@@ -160,7 +160,7 @@ To build the system on Docker Containers, you must execute the folliwng steps.
     
     ````
     
-6. In order to avoid a MySQL error version, configure the password for the root account by executing the following commands:
+6. In order to avoid a MySQL error version, re-configure the password for the MySQL Root Account by executing the following commands:
     ````shell
     mysql> ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY '1234';
     mysql> FLUSH PRIVILEGES;
@@ -174,12 +174,12 @@ To build the system on Docker Containers, you must execute the folliwng steps.
     
 <br>
 
-8. Run Nuclio on Docker by executing the following command:
+8. Run Nuclio into a Docker Container by executing the following command:
     ```shell
     docker run --name nuclio-dashboard -p 8070:8070 -d -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp nuclio/dashboard:stable-amd64
     ```
 
-9. Open your Browser and type into the Address bar the following URL to visualize the Nuclio Dashboard:
+9. Open your Browser, type into the Address bar the following URL and press enter to visualize the Nuclio Dashboard:
     ```shell
     localhost:8070
     ```
@@ -193,21 +193,21 @@ To build the system on Docker Containers, you must execute the folliwng steps.
     
 <br>
 
-11. Run RabbitMQ on Docker by executing the following command:
+11. Run RabbitMQ into a Docker Container by executing the following command:
     ```shell
     docker run --name rabbit-dashboard -p 9000:15672 -d -p 1883:1883 -p 5672:5672 cyrilix/rabbitmq-mqtt
     ```
     
 <br>
 
-12. Check your local IP Address by executing the following command (only on Linux):
+12. Check your local IP Address by executing the following command (it works only on Linux-based systems):
     ```shell
     hostname -I
     ```
 
 <br>
 
-13. On the Nuclio Dashboard, click on the "**Create project**" button.
+13. Open the Nuclio Dashboard and click on the "**Create project**" button.
 14. Fill the form to create a New Project, then click on the "**Create**" button.
 15. Click on the Project you've just created to open it.
 
@@ -215,11 +215,11 @@ To build the system on Docker Containers, you must execute the folliwng steps.
 
 16. Click on the "**Create Function**" button to create a new function.
 17. Click on the "**Import**" option above, and then on the "Import" button below.
-18. Select the ***mqtt_consume_tyre_pressure*** YAML file to import the "**Consume Tyre Pressure**" function.
+18. Select the ***mqtt_consume_tyre_pressure*** YAML file, which is located in the project directory, to import the "**Consume Tyre Pressure**" function.
 19. Click on the "**Create Function**" button.
-20. Edit the "**Consume Tyre Pressure**" function by replacing the **[localIpAddress]** parameter at line 6 with the String value of your local Ip Address you've checked in the previous step: 
+20. Edit the "**Consume Tyre Pressure**" function by replacing the **[localIpAddress]** parameter at line 6 with the String value of your local IP Address you've checked in the previous step: 
     ````shell
-    6   var DATABASE_HOST = "localDatabaseHost";
+    6   var DATABASE_HOST = "[localIpAddress]";
     ````
 
 21. Edit the "Consume Tyre Pressure" function by replacing the **[localIpAddress]** parameter at line 18 with your local IP Address:
@@ -239,9 +239,9 @@ To build the system on Docker Containers, you must execute the folliwng steps.
 25. Click on the "**Import**" option above, and then on the "Import" button below.
 26. Select the ***mqtt_interpreter*** YAML file to import the "**Interpreter**" function.
 27. Click on the "**Create Function**" button.
-28. Edit the "**Interpreter**" function by replacing the **[localIpAddress]** parameter at line 6 with the String value of your local Ip Address: 
+28. Edit the "**Interpreter**" function by replacing the **[localIpAddress]** parameter at line 6 with the String value of your local IP Address: 
     ````shell
-    6   var DATABASE_HOST = [localIpAddress];
+    6   var DATABASE_HOST = "[localIpAddress]";
     ````
 
 29. Edit the "**Interpreter**" function by replacing the **[localIpAddress]** parameter with your local IP Address in the 128-th line of code:
@@ -315,7 +315,7 @@ Run the system by following the next steps.
 3. Go to the "**Simulate Low Tyre Pressure**" function into the Nuclio Dashboard, then click on the "**Test**" button on the right.
 
 4. The "**Simulate Low Tyre Pressure**" function will **generate** a random pressure value which is lower than the standard one (3000), and it will **post** a message on the "**iot/tyre/pressure**" topic.<br>
-The "**Consume Tyre Pressure**" function will be **triggered** by the incoming message on the "**iot/tyre/pressure**" topic and will execute a **query** in order to **insert** the *pressure value* and its corresponding *timestamp* into the Database.<br>
+The "**Consume Tyre Pressure**" function will be **triggered** by the incoming message on the "**iot/tyre/pressure**" topic and will execute a **query** in order to **insert** the *pressure value* and its relative *timestamp* into the Database.<br>
 The "**Interpreter**" function will be **triggered** too by the incoming message on the "**iot/tyre/pressure**" topic, it will execute a **query** in order to **get** the **last 5 records** from the Database and it will interpret the data by **posting** a message on the "**iot/console**" topic.
 
 
