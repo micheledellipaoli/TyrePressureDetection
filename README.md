@@ -86,7 +86,7 @@ More specifically:
 ##### 4) Setup
 To run the system, you must install the following components:
 
-* **Docker**: it is a Container Orchestration platform which allows you to deploy and run portable applications with ease. <br>
+* **Docker**: it is a Containerization platform which allows you to package, deploy and run portable applications with ease. <br>
 To install Docker, execute the following commands:
     ````shell
     sudo apt-get update
@@ -101,7 +101,7 @@ To install Docker, execute the following commands:
 
 <br>
 
-* **Docker Compose**: it is a tool useful to configure the components of a  Microservices Architecture by using a single YAML file.<br>
+* **Docker Compose**: it is a tool useful to configure multiple components of a  Microservices Architecture by using a single YAML file.<br>
 To install Docker Compose, execute the following commands:
     ````shell
     sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
