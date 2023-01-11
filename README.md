@@ -101,15 +101,6 @@ To install Docker, execute the following commands:
 
 <br>
 
-* **Docker Compose**: it is a tool useful to configure multiple components of a  Microservices Architecture by using a single YAML file.<br>
-To install Docker Compose, execute the following commands:
-    ````shell
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-
-    ````
-<br>
-
 * **Node.js**: it is a JavaScript runtime useful to execute back-end code.<br>
 To install Node.js, execute the following command:
     ````shell
