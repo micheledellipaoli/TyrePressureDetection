@@ -314,7 +314,7 @@ Run the system by following the next steps.
 
 3. Go to the "**Simulate Low Tyre Pressure**" function into the Nuclio Dashboard, then click on the "**Test**" button on the right.
 
-4. The "**Simulate Low Tyre Pressure**" function will **generate** a random pressure value which is lower than the standard one (3000), and it will **post** a message on the "**iot/tyre/pressure**" topic.<br>
+4. The "**Simulate Low Tyre Pressure**" function will **generate** a random pressure value which is lower than the standard one (32 psi), and it will **post** a message on the "**iot/tyre/pressure**" topic.<br>
 The "**Consume Tyre Pressure**" function will be **triggered** by the incoming message on the "**iot/tyre/pressure**" topic and will execute a **query** in order to **insert** the *pressure value* and its relative *timestamp* into the Database.<br>
 The "**Interpreter**" function will be **triggered** too by the incoming message on the "**iot/tyre/pressure**" topic, it will execute a **query** in order to **get** the **last 5 records** from the Database and it will interpret the data by **posting** a message on the "**iot/console**" topic.
 
@@ -338,7 +338,7 @@ The "**Interpreter**" function will be **triggered** too by the incoming message
 
 7. Go to the "**Simulate Tyre Puncture**" function into the Nuclio Dashboard, then click on the "**Test**" button on the right.
 
-8. The "**Simulate Tyre Puncture**" function will **generate** 5 random pressure values in decreasing order which are all lower than the standard one (3000), and it will **post** 5 consecutive messages on the "**iot/tyre/pressure**" topic.<br>
+8. The "**Simulate Tyre Puncture**" function will **generate** 5 random pressure values in decreasing order which are all lower than the standard one (32 psi), and it will **post** 5 consecutive messages on the "**iot/tyre/pressure**" topic.<br>
 The "**Consume Tyre Pressure**" function will be **triggered** by each of the incoming messages on the "**iot/tyre/pressure**" topic and will execute a **query** for each message in order to **insert** each *pressure value* and its corresponding *timestamp* into the Database.<br>
 The "**Interpreter**" function will be **triggered** too by each incoming message on the "**iot/tyre/pressure**" topic, and for each incoming messagge it will execute a **query** in order to **get** the **last 5 records** from the Database and it will interpret the data by **posting** a message on the "**iot/console**" topic.
 
@@ -347,11 +347,11 @@ The "**Interpreter**" function will be **triggered** too by each incoming messag
     ````terminal
     C:\Users\Michele Delli Paoli\Desktop\TyrePressureDetection>node logger.js
     [*] Waiting for messages. To exit press CTRL+C
-    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 2418-Mon Dec 05 2022 18:59:21 GMT+0000 (UTC)'
-    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 1479-Mon Dec 05 2022 18:59:26 GMT+0000 (UTC)'
-    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 1274-Mon Dec 05 2022 18:59:30 GMT+0000 (UTC)'
-    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 2094-Mon Dec 05 2022 18:59:24 GMT+0000 (UTC)'
-    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 2044-Mon Dec 05 2022 18:59:25 GMT+0000 (UTC)'
+    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 30-Mon Dec 05 2022 18:59:21 GMT+0000 (UTC)'
+    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 26-Mon Dec 05 2022 18:59:24 GMT+0000 (UTC)'
+    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 23-Mon Dec 05 2022 18:56:30 GMT+0000 (UTC)'
+    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 21-Mon Dec 05 2022 18:59:33 GMT+0000 (UTC)'
+    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 18-Mon Dec 05 2022 18:59:35 GMT+0000 (UTC)'
     
     ````
 10. Go to the terminal in which you've executed the **loggerConsole.js**, and you will see something like this:
@@ -370,7 +370,7 @@ The "**Interpreter**" function will be **triggered** too by each incoming messag
 
 11. Go to the "**Restore Tyre Pressure**" function into the Nuclio Dashboard, then click on the "**Test**" button on the right.
 
-12. The "**Restore Tyre Pressure**" function will **generate** a random pressure value which is **greater or equals** than the standard one (3000), and it will **post** a message on the "**iot/tyre/pressure**" topic.<br>
+12. The "**Restore Tyre Pressure**" function will **generate** a random pressure value which is **greater or equals** than the standard one (32 psi), and it will **post** a message on the "**iot/tyre/pressure**" topic.<br>
 The "**Consume Tyre Pressure**" function will be **triggered** by the incoming message on the "**iot/tyre/pressure**" topic and will execute a **query** in order to **insert** the *pressure value* and its corresponding *timestamp* into the Database.<br>
 The "**Interpreter**" function will be **triggered** too by the incoming message on the "**iot/tyre/pressure**" topic, and it will execute a **query** in order to **get** the **last 5 records** from the Database and it will interpret the data by **posting** a message on the "**iot/console**" topic.
 
