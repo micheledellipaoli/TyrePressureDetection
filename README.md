@@ -323,7 +323,7 @@ The "**Interpreter**" function will be **triggered** too by the incoming message
     ````terminal
     C:\Users\Michele Delli Paoli\Desktop\TyrePressureDetection>node logger.js
     [*] Waiting for messages. To exit press CTRL+C
-    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 2906-Mon Dec 05 2022 18:12:56 GMT+0000 (UTC)'
+    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 29-Mon Dec 05 2022 18:12:56 GMT+0000 (UTC)'
     
     ````
 6. Go to the terminal in which you've executed the **loggerConsole.js**, and you will see something like this:
@@ -379,7 +379,7 @@ The "**Interpreter**" function will be **triggered** too by the incoming message
     ````terminal
     C:\Users\Michele Delli Paoli\Desktop\TyrePressureDetection>node logger.js
     [*] Waiting for messages. To exit press CTRL+C
-    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 3027-Mon Dec 05 2022 19:09:15 GMT+0000 (UTC)'
+    [x] Received 'Function 'mqtt_consume_tyre_pressure' has been triggered by the following message received on topic 'iot/tyre/pressure': 33-Mon Dec 05 2022 19:09:15 GMT+0000 (UTC)'
     
     ````
 14. Go to the terminal in which you've executed the **loggerConsole.js**, and you will see something like this:
