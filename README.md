@@ -1,19 +1,7 @@
-# SCIoT Project
-
-**Project name**: Tyre Pressure Detection
-<br>
-**Student name**: Michele Delli Paoli
-<br>
-**Student ID**: 0522500797
-<br>
-<br>
-
-### Description
-
-
+# Tyre Pressure Detection System
 
 ##### 1) Application Goal
-The system allows to **monitor** the pressure of a car's tyre in order to **alert** the driver:
+This project has seen the development of a system which allows to **monitor** the pressure of a car's tyre in order to **alert** the driver:
 * in case a **tyre puncture** occurs;
 * just to report **low tyre pressure**.
 
